@@ -39,7 +39,8 @@ export async function GET(
   const emailMap = new Map(authUsers.map(u => [u.id, u.email ?? '']))
 
   const result = (data ?? []).map(e => {
-    const user = e.users as { id: string; name: string } | null
+    const usersData = e.users as unknown as { id: string; name: string }[] | { id: string; name: string } | null
+    const user = Array.isArray(usersData) ? usersData[0] ?? null : usersData
     return {
       id: e.id,
       status: e.status,
